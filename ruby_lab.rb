@@ -132,6 +132,26 @@ def mcw(input)
 	return mcw
 end
 
+def create_title(word)
+	counter = 0
+	title = ""
+	if title.length == 0 && $bigrams.has_key?(word)
+		title = word
+		word = mcw(word)
+	else
+		return word
+	end
+	while counter<19 && $bigrams[word].size>0
+		temp = mcw(word)
+		if
+			title = title + " " + word
+			word = temp
+		end
+		counter = counter+1
+	end
+	return title
+end
+
 # Executes the program
 def main_loop()
 	puts "CSCI 305 Ruby Lab submitted by #{$name}"
@@ -143,19 +163,22 @@ def main_loop()
 
 	# process the file
 	process_file(ARGV[0])
+	puts $counter
 
+	puts $bigrams["girl"]
 
-	puts mcw("happy")
-	puts mcw("sad")
-	puts mcw("love")
-	puts $bigrams["happy"]
+	puts $bigrams["hey"]
 
-	#Get user input
-	puts "Enter a word [Enter 'q' to quit]:"
-	word = STDIN.gets.chomp
-	puts word
-
-
+	#Get user input until q is entered
+	loop do
+		puts "Enter a word [Enter 'q' to quit]:"
+		#get word from user and store in word
+		word = STDIN.gets.chomp
+		#check if q was entered, if so break from loop
+		break if word.eql?('q')
+		#if a word was entered create a new title and display
+		puts create_title(word)
+	end
 end
 
 if __FILE__==$0
